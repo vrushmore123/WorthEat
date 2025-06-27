@@ -39,7 +39,7 @@ export default function RegisterForm() {
 
     try {
       setLoading(true);
-      const resUserExists = await fetch("/api/userExists", {
+      const resUserExists = await fetch("/api/customer/userExists", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
