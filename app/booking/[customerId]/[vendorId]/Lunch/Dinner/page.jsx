@@ -73,7 +73,9 @@ const MealMenu = ({ mealType }) => {
 
   const fetchMealMenu = async () => {
     try {
-      const response = await fetch("/api/getMenuItems");
+      const response = await fetch(
+        `/api/vendor/getMenuItems?vendorId=${vendorId}`
+      );
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       const items = Array.isArray(data) ? data : data.menuItems;
@@ -176,7 +178,7 @@ const MealMenu = ({ mealType }) => {
     };
 
     try {
-      const response = await fetch("/api/addOrders", {
+      const response = await fetch("/api/order/addOrders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

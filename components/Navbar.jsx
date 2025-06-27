@@ -38,7 +38,7 @@ const Navbar = ({ mealType, setMealType }) => {
 
       try {
         const resUserExists = await fetch(
-          `/api/getUserInfo?customerId=${customerId}`,
+          `/api/customer/getUserInfo?customerId=${customerId}`,
           {
             method: "GET",
             headers: {
