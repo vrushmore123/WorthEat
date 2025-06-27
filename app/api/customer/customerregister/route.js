@@ -22,7 +22,7 @@ export async function POST(req) {
     const {
       firstName,
       lastName,
-      empId,
+     
       email,
       phoneNo,
       address,
@@ -48,7 +48,7 @@ export async function POST(req) {
     const newUser = new User({
       firstName,
       lastName,
-      empId,
+     
       email,
       phoneNo,
       address,

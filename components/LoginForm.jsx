@@ -29,7 +29,7 @@ export default function LoginForm() {
     }
 
     try {
-      const resUserExists = await fetch("/api/userExists", {
+      const resUserExists = await fetch("/api/customer/userExists", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

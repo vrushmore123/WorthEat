@@ -46,7 +46,7 @@ export default function RegisterForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email }),
       });
 
       const { user } = await resUserExists.json();
@@ -56,7 +56,7 @@ export default function RegisterForm() {
         return;
       }
 
-      const res = await fetch("/api/customerregister", {
+      const res = await fetch("/api/customer/customerregister", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export default function RegisterForm() {
           firstName,
           lastName,
           email,
-          empId,
+        
           password,
           phoneNo, // Sending phoneNo to backend
           address,
@@ -132,12 +132,6 @@ export default function RegisterForm() {
             className="w-72 md:w-full"
           />
 
-          <input
-            onChange={(e) => setEmpId(e.target.value)}
-            type="text"
-            placeholder="Employee ID"
-            className="w-72 md:w-full"
-          />
 
           <div className="relative w-72 md:w-full">
             <input
