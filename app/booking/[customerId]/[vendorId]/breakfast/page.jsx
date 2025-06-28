@@ -80,7 +80,7 @@ const BreakfastMenu = () => {
 
   const fetchBreakfastMenu = async () => {
     try {
-      const response = await fetch("/api/getBreakfastItems");
+      const response = await fetch("/api/Customer/getBreakfastItems");
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -165,7 +165,7 @@ const BreakfastMenu = () => {
     };
 
     try {
-      const response = await fetch("/api/addOrders", {
+      const response = await fetch("/api/Customer/addOrders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

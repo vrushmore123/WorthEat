@@ -87,7 +87,7 @@ const SnacksMenu = () => {
 
   const fetchSnacksMenu = async () => {
     try {
-      const response = await fetch("/api/getSnackItems");
+      const response = await fetch("/api/Customer/getSnackItems");
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -187,7 +187,7 @@ const SnacksMenu = () => {
     };
 
     try {
-      const response = await fetch("/api/addOrders", {
+      const response = await fetch("/api/Customer/addOrders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -88,7 +88,7 @@ const Page = () => {
     const [year, month, day] = date.split("-");
     const monthName = getMonthName(parseInt(month) - 1);
     const res = await fetch(
-      `/api/getWeeklyMenu?date=${day}&month=${monthName}&year=${year}`
+      `/api/Customer/getWeeklyMenu?date=${day}&month=${monthName}&year=${year}`
     );
     const data = await res.json();
     // console.log(data)
@@ -112,7 +112,7 @@ const Page = () => {
 
     try {
       const res = await fetch(
-        `/api/orderDetailsUser?customerId=${customerId}&day=${day}&month=${monthName}&year=${year}&category=WeeklyMenu`
+        `/api/Customer/orderDetailsUser?customerId=${customerId}&day=${day}&month=${monthName}&year=${year}&category=WeeklyMenu`
       );
       const data = await res.json();
       if (res.ok === true) {
@@ -146,7 +146,7 @@ const Page = () => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch("/api/addLead", {
+      const response = await fetch("/api/Customer/addLead", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
