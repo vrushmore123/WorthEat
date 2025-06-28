@@ -84,6 +84,7 @@ const Navbar = ({ mealType, setMealType }) => {
       router.push(`/${route}/${customerId}`);
       return;
     }
+ 
     router.push(`/booking/${customerId}/${vendorId}/${route}`);
   };
 
@@ -93,11 +94,7 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
-    {
-      name: "Plan Your Order",
-      route: "planYourOrder", // Simplified URL structure
-      icon: <Calendar size={20} />,
-    },
+   
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
