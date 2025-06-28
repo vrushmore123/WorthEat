@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   HeartPulse,
   Calendar,
+  UtensilsCrossed
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -106,7 +107,8 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
-    { name: "Plan Your Order", route: "planYourOrder" },
+    { name: "Plan Order", route: "planYourOrder" },
+    { name: "Discounted Food", route: "discount" },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
@@ -114,7 +116,8 @@ const Navbar = ({ mealType, setMealType }) => {
   const healthOptions = [
     { name: "Dish Recommender", route: "dish-recommender" },
     { name: "Meal Planner", route: "meal-planner" },
-    { name: "Nutrition Checker", route: "nutrition-checker" },
+    { name: "Nutrition Planner", route: "nutrition-checker" },
+    { name: "Dish planner", route: "recommend" },
   ];
 
   return (
@@ -156,8 +159,8 @@ const Navbar = ({ mealType, setMealType }) => {
                       setIsHealthDropdownOpen(!isHealthDropdownOpen)
                     }
                   >
-                    <HeartPulse size={20} className="mr-2" />
-                    Health
+                    <UtensilsCrossed size={22} className="mr-3" />
+                    Meal Planner
                     <ChevronDown
                       size={18}
                       className={`ml-2 transition-transform duration-200 ${
@@ -210,8 +213,8 @@ const Navbar = ({ mealType, setMealType }) => {
                       setIsHealthDropdownOpen(!isHealthDropdownOpen)
                     }
                   >
-                    <HeartPulse size={20} className="mr-2" />
-                    Health
+                    <UtensilsCrossed size={22} className="mr-3" />
+                    Meal Planner
                     <ChevronDown
                       size={18}
                       className={`ml-2 transition-transform duration-200 ${
@@ -358,8 +361,8 @@ const Navbar = ({ mealType, setMealType }) => {
                           setIsHealthDropdownOpen(!isHealthDropdownOpen)
                         }
                       >
-                        <HeartPulse size={22} className="mr-3" />
-                        Health
+                        <UtensilsCrossed size={22} className="mr-3" />
+                        Meal Planner
                         <ChevronDown
                           size={18}
                           className={`ml-auto transition-transform duration-200 ${
