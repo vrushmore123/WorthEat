@@ -517,7 +517,7 @@ const CalendarOrder = ({
                             <div className="flex-grow flex flex-col">
                               {plans.length > 0 ? (
                                 <div className="flex-grow">
-                                  {/* Meal dots indicator */}
+                                 
                                   <div className="flex flex-wrap gap-1 mb-2">
                                     {plans.slice(0, 6).map((plan, idx) => (
                                       <div
