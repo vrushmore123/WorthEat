@@ -109,49 +109,30 @@ function createMealPlanPrompt(
   days
 ) {
   return `
-    You are an expert nutritionist creating a ${days}-day meal plan for a food delivery app. 
-
-    User Requirements:
+    [IMPORTANT INSTRUCTIONS]
+    - You MUST respond with ONLY valid JSON output
+    - Do NOT include any comments, explanations, or markdown formatting
+    - Do NOT include any text outside the JSON structure
+    - Do NOT use JavaScript-style comments (// or /* */)
+    - The response must be parseable by JSON.parse() directly
+    
+    Create a ${days}-day meal plan with these specifications:
     - Primary goal: ${goal}
     - Dietary preferences: ${dietaryPreferences || "none specified"}
     - Allergies: ${allergies || "none"}
     - Cuisine preferences: ${cuisinePreferences || "any"}
-
-    Create a detailed meal plan with these sections for each day:
-    1. Breakfast (approx. 300-400 calories for weight loss)
-    2. Mid-morning snack (approx. 100-150 calories)
-    3. Lunch (approx. 400-500 calories)
-    4. Evening snack (approx. 100-150 calories)
-    5. Dinner (approx. 400-450 calories)
-
-    For each meal:
-    - Provide a descriptive meal name
-    - List main ingredients
-    - Note approximate calories and macronutrients (protein, carbs, fats)
-    - Include preparation notes if important
-    - Suggest portion sizes
-
-    Special Instructions:
-    - Focus on whole foods and balanced nutrition
-    - For weight loss: emphasize high protein, fiber, and volume foods
-    - For muscle gain: increase protein portions and include recovery foods
-    - Ensure meals can realistically be delivered (avoid foods that don't travel well)
-    - Include variety to prevent boredom
-    - Flag any potential allergens clearly
-
-    Format the response in this exact JSON structure (only output the raw JSON):
-
+    
+    [REQUIRED FORMAT]
     {
       "summary": {
         "totalDays": ${days},
-        "averageDailyCalories": [range based on goal],
-        "proteinFocus": [true/false],
+        "averageDailyCalories": "range based on goal",
+        "proteinFocus": true/false,
         "keyFeatures": ["list", "of", "features"]
       },
       "days": [
         {
           "dayNumber": 1,
-          "date": "optional",
           "meals": [
             {
               "mealType": "breakfast",
@@ -167,11 +148,9 @@ function createMealPlanPrompt(
               "allergens": ["list", "if", "any"],
               "cuisineType": "type",
               "preparationNotes": "any special notes"
-            },
-            // ... other meals
+            }
           ]
         }
-        // ... other days
       ]
     }
   `;
@@ -179,14 +158,34 @@ function createMealPlanPrompt(
 
 function parseMealPlanResponse(response) {
   try {
-    // Try to parse the JSON directly
-    const startIdx = response.indexOf("{");
-    const endIdx = response.lastIndexOf("}");
-    const jsonStr = response.slice(startIdx, endIdx + 1);
-    return JSON.parse(jsonStr);
+    // First try to parse directly (in case response is pure JSON)
+    try {
+      return JSON.parse(response);
+    } catch (e) {
+      // If direct parse fails, try to extract JSON from text
+      const jsonStart = response.indexOf("{");
+      const jsonEnd = response.lastIndexOf("}");
+
+      if (jsonStart === -1 || jsonEnd === -1) {
+        throw new Error("No JSON found in response");
+      }
+
+      const jsonStr = response.slice(jsonStart, jsonEnd + 1);
+
+      // Remove any comments and other non-JSON content
+      const cleanedJson = jsonStr
+        .replace(/\/\/.*?\n/g, "") // Remove line comments
+        .replace(/\/\*.*?\*\//g, "") // Remove block comments
+        .trim();
+
+      return JSON.parse(cleanedJson);
+    }
   } catch (e) {
-    // Fallback to returning the raw response if parsing fails
     console.error("Failed to parse AI response:", e);
-    return { error: "Could not parse meal plan", rawResponse: response };
+    return {
+      error: "Could not parse meal plan",
+      rawResponse: response,
+      parsingError: e.message,
+    };
   }
 }

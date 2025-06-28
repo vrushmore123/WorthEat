@@ -2,7 +2,15 @@
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { ChevronDown, LogOut, Menu, X, User, ShoppingBag } from "lucide-react";
+import {
+  ChevronDown,
+  LogOut,
+  Menu,
+  X,
+  User,
+  ShoppingBag,
+  HeartPulse,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import WortheatIMG from "../assets/NoBG.svg";
@@ -16,6 +24,7 @@ const Navbar = ({ mealType, setMealType }) => {
   const [email, setEmail] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isHealthDropdownOpen, setIsHealthDropdownOpen] = useState(false);
 
   // Determine if the current route is myOrders
   const isMyOrdersPage = pathname.includes("myOrders");
@@ -75,6 +84,16 @@ const Navbar = ({ mealType, setMealType }) => {
     router.push(`/booking/${customerId}/${vendorId}/${route}`);
   };
 
+  const handleHealthNavigation = (option) => {
+    setIsSidebarOpen(false);
+    setIsHealthDropdownOpen(false);
+    if (!customerId) {
+      toast.error("Customer ID is missing!");
+      return;
+    }
+    router.push(`/health/${customerId}/${option}`);
+  };
+
   // Navigation menu items
   const navItems = [
     { name: "Breakfast", route: "breakfast" },
@@ -82,6 +101,13 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
+  ];
+
+  // Health options
+  const healthOptions = [
+    { name: "Dish Recommender", route: "dish-recommender" },
+    { name: "Meal Planner", route: "meal-planner" },
+    { name: "Nutrition Checker", route: "nutrition-checker" },
   ];
 
   return (
@@ -103,29 +129,107 @@ const Navbar = ({ mealType, setMealType }) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
             {isMyOrdersPage ? (
-              <button
-                key="myOrders"
-                className="flex items-center px-5 py-3 text-base font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors"
-                onClick={() => handleNavigation("myOrders")}
-              >
-                <ShoppingBag size={20} className="mr-2" />
-                My Orders
-              </button>
-            ) : (
-              navItems.map((item) => (
+              <>
                 <button
-                  key={item.route}
-                  className={`flex items-center px-5 py-3 text-base font-medium rounded-md transition-colors ${
-                    pathname.includes(item.route)
-                      ? "bg-orange-500 text-white"
-                      : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
-                  }`}
-                  onClick={() => handleNavigation(item.route)}
+                  key="myOrders"
+                  className="flex items-center px-5 py-3 text-base font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                  onClick={() => handleNavigation("myOrders")}
                 >
-                  {item.icon && <span className="mr-2">{item.icon}</span>}
-                  {item.name}
+                  <ShoppingBag size={20} className="mr-2" />
+                  My Orders
                 </button>
-              ))
+                <div className="relative">
+                  <button
+                    className={`flex items-center px-5 py-3 text-base font-medium rounded-md ${
+                      isHealthDropdownOpen
+                        ? "bg-orange-100 text-orange-600"
+                        : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
+                    } transition-colors`}
+                    onClick={() =>
+                      setIsHealthDropdownOpen(!isHealthDropdownOpen)
+                    }
+                  >
+                    <HeartPulse size={20} className="mr-2" />
+                    Health
+                    <ChevronDown
+                      size={18}
+                      className={`ml-2 transition-transform duration-200 ${
+                        isHealthDropdownOpen ? "transform rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isHealthDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all z-50">
+                      <div className="py-2">
+                        {healthOptions.map((option) => (
+                          <button
+                            key={option.route}
+                            onClick={() => handleHealthNavigation(option.route)}
+                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                          >
+                            {option.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                {navItems.map((item) => (
+                  <button
+                    key={item.route}
+                    className={`flex items-center px-5 py-3 text-base font-medium rounded-md transition-colors ${
+                      pathname.includes(item.route)
+                        ? "bg-orange-500 text-white"
+                        : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
+                    }`}
+                    onClick={() => handleNavigation(item.route)}
+                  >
+                    {item.icon && <span className="mr-2">{item.icon}</span>}
+                    {item.name}
+                  </button>
+                ))}
+                <div className="relative">
+                  <button
+                    className={`flex items-center px-5 py-3 text-base font-medium rounded-md ${
+                      isHealthDropdownOpen
+                        ? "bg-orange-100 text-orange-600"
+                        : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
+                    } transition-colors`}
+                    onClick={() =>
+                      setIsHealthDropdownOpen(!isHealthDropdownOpen)
+                    }
+                  >
+                    <HeartPulse size={20} className="mr-2" />
+                    Health
+                    <ChevronDown
+                      size={18}
+                      className={`ml-2 transition-transform duration-200 ${
+                        isHealthDropdownOpen ? "transform rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isHealthDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all z-50">
+                      <div className="py-2">
+                        {healthOptions.map((option) => (
+                          <button
+                            key={option.route}
+                            onClick={() => handleHealthNavigation(option.route)}
+                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                          >
+                            {option.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </div>
 
@@ -231,33 +335,101 @@ const Navbar = ({ mealType, setMealType }) => {
                   Menu
                 </p>
                 {isMyOrdersPage ? (
-                  <button
-                    key="myOrders"
-                    className="flex items-center px-4 py-3 rounded-md text-white bg-orange-500 text-base"
-                    onClick={() => handleNavigation("myOrders")}
-                  >
-                    <ShoppingBag size={22} className="mr-3" />
-                    My Orders
-                  </button>
-                ) : (
-                  navItems.map((item) => (
+                  <>
                     <button
-                      key={item.route}
-                      className={`flex items-center px-4 py-3 rounded-md text-base ${
-                        pathname.includes(item.route)
-                          ? "bg-orange-500 text-white"
-                          : "text-gray-700 hover:bg-orange-100"
-                      }`}
-                      onClick={() => handleNavigation(item.route)}
+                      key="myOrders"
+                      className="flex items-center px-4 py-3 rounded-md text-white bg-orange-500 text-base"
+                      onClick={() => handleNavigation("myOrders")}
                     >
-                      {item.icon ? (
-                        <span className="mr-3">{item.icon}</span>
-                      ) : (
-                        <div className="w-5 h-5 mr-3" />
-                      )}
-                      {item.name}
+                      <ShoppingBag size={22} className="mr-3" />
+                      My Orders
                     </button>
-                  ))
+                    <div className="border-t border-gray-200 pt-3 mt-3">
+                      <button
+                        className="flex items-center px-4 py-3 rounded-md text-base text-gray-700 hover:bg-orange-100 w-full"
+                        onClick={() =>
+                          setIsHealthDropdownOpen(!isHealthDropdownOpen)
+                        }
+                      >
+                        <HeartPulse size={22} className="mr-3" />
+                        Health
+                        <ChevronDown
+                          size={18}
+                          className={`ml-auto transition-transform duration-200 ${
+                            isHealthDropdownOpen ? "transform rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isHealthDropdownOpen && (
+                        <div className="ml-8 mt-2 space-y-2">
+                          {healthOptions.map((option) => (
+                            <button
+                              key={option.route}
+                              onClick={() =>
+                                handleHealthNavigation(option.route)
+                              }
+                              className="flex items-center px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-orange-50 w-full"
+                            >
+                              {option.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {navItems.map((item) => (
+                      <button
+                        key={item.route}
+                        className={`flex items-center px-4 py-3 rounded-md text-base ${
+                          pathname.includes(item.route)
+                            ? "bg-orange-500 text-white"
+                            : "text-gray-700 hover:bg-orange-100"
+                        }`}
+                        onClick={() => handleNavigation(item.route)}
+                      >
+                        {item.icon ? (
+                          <span className="mr-3">{item.icon}</span>
+                        ) : (
+                          <div className="w-5 h-5 mr-3" />
+                        )}
+                        {item.name}
+                      </button>
+                    ))}
+                    <div className="border-t border-gray-200 pt-3 mt-3">
+                      <button
+                        className="flex items-center px-4 py-3 rounded-md text-base text-gray-700 hover:bg-orange-100 w-full"
+                        onClick={() =>
+                          setIsHealthDropdownOpen(!isHealthDropdownOpen)
+                        }
+                      >
+                        <HeartPulse size={22} className="mr-3" />
+                        Health
+                        <ChevronDown
+                          size={18}
+                          className={`ml-auto transition-transform duration-200 ${
+                            isHealthDropdownOpen ? "transform rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isHealthDropdownOpen && (
+                        <div className="ml-8 mt-2 space-y-2">
+                          {healthOptions.map((option) => (
+                            <button
+                              key={option.route}
+                              onClick={() =>
+                                handleHealthNavigation(option.route)
+                              }
+                              className="flex items-center px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-orange-50 w-full"
+                            >
+                              {option.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
 
