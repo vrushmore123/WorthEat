@@ -8,9 +8,11 @@ export const fetchOrderDetails = async (orderId) => {
     if (response.ok) {
       return data;
     } else {
-      return console.error("Order not found:", data.message);
+      console.error("Order not found:", data.message);
+      throw new Error(data.message || "Failed to fetch order details");
     }
   } catch (error) {
-    return console.error("Error fetching order:", error);
+    console.error("Error fetching order:", error);
+    throw error;
   }
 };

@@ -41,7 +41,7 @@ export default function VendorLoginForm() {
 
     try {
       setLoading(true);
-      const resVendorExists = await fetch("/api/vendorExists", {
+      const resVendorExists = await fetch("/api/Vendor/vendorExists", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
