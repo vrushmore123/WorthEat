@@ -517,9 +517,35 @@ const CalendarOrder = ({
                             <div className="flex-grow flex flex-col">
                               {plans.length > 0 ? (
                                 <div className="flex-grow">
+                                 
+                                  <div className="flex flex-wrap gap-1 mb-2">
+                                    {plans.slice(0, 6).map((plan, idx) => (
+                                      <div
+                                        key={`${plan.food.id}-${idx}`}
+                                        className="w-2 h-2 rounded-full"
+                                        style={{
+                                          backgroundColor:
+                                            plan.food.type === "vegetarian"
+                                              ? "#10b981"
+                                              : plan.food.type === "special"
+                                              ? "#f59e0b"
+                                              : "#3b82f6",
+                                        }}
+                                        title={`${plan.food.name} (${plan.qty})`}
+                                      />
+                                    ))}
+                                    {plans.length > 6 && (
+                                      <div
+                                        className="w-2 h-2 rounded-full bg-gray-400"
+                                        title={`+${plans.length - 6} more`}
+                                      />
+                                    )}
+                                  </div>
+
+                                  {/* Detailed meal indicator */}
                                   <ProfessionalMealIndicator
                                     meals={plans}
-                                    maxVisible={isExpanded ? undefined : 3}
+                                    maxVisible={isExpanded ? undefined : 2}
                                     expanded={isExpanded}
                                     onRemove={(foodId) =>
                                       removeItem(key, foodId)
@@ -536,8 +562,8 @@ const CalendarOrder = ({
                                   } flex-grow flex items-center justify-center`}
                                 >
                                   <div className="text-center">
-                                    <Plus className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                                    <span className="text-sm text-gray-400">
+                                    <Plus className="w-6 h-6 text-gray-300 mx-auto mb-1" />
+                                    <span className="text-xs text-gray-400">
                                       Drop meals here
                                     </span>
                                   </div>
@@ -683,9 +709,34 @@ const CalendarOrder = ({
                                 <div className="flex-grow flex flex-col">
                                   {plans.length > 0 ? (
                                     <div className="flex-grow">
+                                      {/* Compact dots for month view */}
+                                      <div className="flex flex-wrap gap-0.5 mb-1">
+                                        {plans.slice(0, 8).map((plan, idx) => (
+                                          <div
+                                            key={`${plan.food.id}-${idx}`}
+                                            className="w-1.5 h-1.5 rounded-full"
+                                            style={{
+                                              backgroundColor:
+                                                plan.food.type === "vegetarian"
+                                                  ? "#10b981"
+                                                  : plan.food.type === "special"
+                                                  ? "#f59e0b"
+                                                  : "#3b82f6",
+                                            }}
+                                            title={`${plan.food.name} (${plan.qty})`}
+                                          />
+                                        ))}
+                                        {plans.length > 8 && (
+                                          <div
+                                            className="w-1.5 h-1.5 rounded-full bg-gray-400"
+                                            title={`+${plans.length - 8} more`}
+                                          />
+                                        )}
+                                      </div>
+
                                       <ProfessionalMealIndicator
                                         meals={plans}
-                                        maxVisible={isExpanded ? undefined : 2}
+                                        maxVisible={isExpanded ? undefined : 1}
                                         expanded={isExpanded}
                                         compact={!isExpanded}
                                         onRemove={(foodId) =>
