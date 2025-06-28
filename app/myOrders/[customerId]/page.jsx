@@ -166,11 +166,11 @@ const OrderCard = ({ order }) => {
             </p>
             <p className="text-gray-800 mt-1">
               Total:{" "}
-              <span className="font-bold text-black">₹{order.totalAmount}</span>
+              <span className="font-bold text-black">Rs{order.totalAmount}</span>
             </p>
             <p className="text-green-700">
               After Discount:{" "}
-              <span className="font-bold">₹{totalAfterDiscount}</span>
+              <span className="font-bold">Rs{totalAfterDiscount}</span>
             </p>
           </div>
 
@@ -202,7 +202,7 @@ const OrderCard = ({ order }) => {
                     {item?.itemId?.itemName}
                   </h3>
                   <p className="font-semibold text-gray-800">
-                    ₹{item?.itemId?.price}
+                    Rs{item?.itemId?.price}
                   </p>
                   <p className="text-gray-600">
                     Quantity: <span className="font-bold">{item.quantity}</span>

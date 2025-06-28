@@ -155,7 +155,7 @@ const ProfessionalFoodCard = ({
             <span className="font-bold text-gray-900">
               {food.price}
             </span>
-            <span className="text-xs text-gray-500">DKK</span>
+            <span className="text-xs text-gray-500">Rs</span>
           </div>
           
           <button

@@ -358,7 +358,7 @@ const SnacksMenu = () => {
                   </span>
                 </button>
                 <div className="ml-4 text-lg font-bold">
-                  Total: ₹{calculateTotalPrice()}
+                  Total: Rs{calculateTotalPrice()}
                 </div>
               </div>
               <button
@@ -451,7 +451,7 @@ const SnacksMenu = () => {
                             {item.category}
                           </p>
                           <p className="text-orange-600 font-semibold">
-                            ₹{item.price}
+                            Rs{item.price}
                           </p>
                         </div>
                       </div>
@@ -494,7 +494,7 @@ const SnacksMenu = () => {
                 <div className="flex justify-between items-center mb-4">
                   <p className="text-lg font-bold">Total:</p>
                   <p className="text-xl font-bold text-orange-600">
-                    ₹{calculateTotalPrice()}
+                    Rs{calculateTotalPrice()}
                   </p>
                 </div>
 

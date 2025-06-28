@@ -210,7 +210,7 @@ const Page = () => {
                     </p>
                     <div className="flex items-center justify-between mt-1">
                       <p className="font-semibold text-orange-600">
-                        ₹{item.itemId.price}
+                        Rs{item.itemId.price}
                       </p>
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                         Qty: {item.quantity}
@@ -287,7 +287,7 @@ const Page = () => {
                   <p className="text-gray-600 text-sm">Total Amount</p>
                   <div className="flex items-center">
                     <span className="text-2xl font-bold">
-                      ₹{totalAfterDiscount.toFixed(2)}
+                      Rs{totalAfterDiscount.toFixed(2)}
                     </span>
                     {couponApplied && (
                       <span className="ml-2 line-through text-gray-500">

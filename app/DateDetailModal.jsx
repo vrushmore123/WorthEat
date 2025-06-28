@@ -147,7 +147,7 @@ const DateDetailModal = ({
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
-                            {meal.food.price} DKK each
+                            {meal.food.price} Rs each
                           </span>
                           <span className="text-xs text-gray-500 dark:text-gray-400">
                             • {meal.food.prepTime || "15-20 min"}
@@ -181,7 +181,7 @@ const DateDetailModal = ({
                         {/* Subtotal */}
                         <div className="text-right min-w-[80px]">
                           <div className="font-bold text-gray-800 dark:text-gray-200">
-                            {(meal.food.price * meal.qty).toFixed(0)} DKK
+                            {(meal.food.price * meal.qty).toFixed(0)} Rs
                           </div>
                         </div>
 

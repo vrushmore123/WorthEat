@@ -178,14 +178,14 @@ const CancelledOrdersPage = () => {
                   <div className="border-t pt-4 mb-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-gray-500">Original Price:</span>
-                      <span className="text-gray-400 line-through text-lg">₹{order.originalPrice}</span>
+                      <span className="text-gray-400 line-through text-lg">Rs{order.originalPrice}</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-gray-700 font-semibold">Discounted Price:</span>
-                      <span className="text-green-600 font-bold text-xl">₹{discountedPrice}</span>
+                      <span className="text-green-600 font-bold text-xl">Rs{discountedPrice}</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-green-600 text-sm font-medium">You save ₹{savings}!</span>
+                      <span className="text-green-600 text-sm font-medium">You save Rs{savings}!</span>
                     </div>
                   </div>
 

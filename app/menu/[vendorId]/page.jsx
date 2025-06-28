@@ -161,7 +161,7 @@ const MenuCard = ({ item, onEdit }) => {
           className="w-full p-2 border rounded mt-2"
         />
       ) : (
-        <p className="text-sm text-gray-500 mt-2">Price: ₹{item.price}</p>
+        <p className="text-sm text-gray-500 mt-2">Price: Rs{item.price}</p>
       )}
       {isEditing ? (
         <input

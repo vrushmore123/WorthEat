@@ -70,7 +70,7 @@ const ProfessionalMealIndicator = ({
                   <span className="text-xs text-gray-500">×{meal.qty}</span>
                   {meal.food.price && (
                     <span className="text-xs text-gray-500">
-                      • {(meal.food.price * meal.qty).toFixed(0)} DKK
+                      • {(meal.food.price * meal.qty).toFixed(0)} Rs
                     </span>
                   )}
                 </div>
@@ -175,7 +175,7 @@ const ProfessionalMealIndicator = ({
                   <div className="flex items-center space-x-1">
                     <span>•</span>
                     <span className="font-medium text-green-600">
-                      {(meal.food.price * meal.qty).toFixed(0)} DKK
+                      {(meal.food.price * meal.qty).toFixed(0)} Rs
                     </span>
                   </div>
                 )}

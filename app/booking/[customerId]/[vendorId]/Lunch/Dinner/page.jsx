@@ -335,9 +335,7 @@ const MealMenu = ({ mealType }) => {
               <p className="text-center">No items in the cart.</p>
             )}
             <div className="mt-6 flex justify-between items-center">
-              <p className="text-lg font-bold">
-                Total: ₹{calculateTotalPrice()}
-              </p>
+              <p className="text-lg font-bold">Total: Rs{calculateTotalPrice()}</p>
               <div>
                 {orderItems.length ? (
                   <button

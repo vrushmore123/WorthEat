@@ -72,7 +72,7 @@ const MealIndicator = ({ meals, maxVisible = 3 }) => {
           {/* Tooltip */}
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 pointer-events-none">
             <div className="bg-gray-900 text-white text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-lg">
-              {meal.food.name} × {meal.totalQty}
+              {meal.food.name} × {meal.totalQty} Rs
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-l-transparent border-r-transparent border-t-gray-900"></div>
             </div>
           </div>
