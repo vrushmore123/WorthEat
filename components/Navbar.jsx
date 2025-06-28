@@ -2,7 +2,15 @@
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { ChevronDown, LogOut, Menu, X, User, ShoppingBag } from "lucide-react";
+import {
+  ChevronDown,
+  LogOut,
+  Menu,
+  X,
+  User,
+  ShoppingBag,
+  Calendar,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import WortheatIMG from "../assets/NoBG.svg";
@@ -64,6 +72,10 @@ const Navbar = ({ mealType, setMealType }) => {
       toast.error("Vendor ID is missing!");
       return;
     }
+    if (route === "planYourOrder") {
+      router.push(`/calender/${vendorId}/${customerId}`); // Exception for "Plan Your Order"
+      return;
+    }
     if (["breakfast", "snacks", "Lunch", "specials"].includes(route)) {
       router.push(`/booking/${customerId}/${vendorId}/${route}`);
       return;
@@ -81,6 +93,11 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
+    {
+      name: "Plan Your Order",
+      route: "planYourOrder", // Simplified URL structure
+      icon: <Calendar size={20} />,
+    },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
