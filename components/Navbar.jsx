@@ -81,6 +81,7 @@ const Navbar = ({ mealType, setMealType }) => {
       router.push(`/${route}/${customerId}`);
       return;
     }
+ 
     router.push(`/booking/${customerId}/${vendorId}/${route}`);
   };
 
@@ -100,6 +101,7 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
+   
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
