@@ -3,7 +3,7 @@ import RegisterForm from "../../../components/RegisterForm";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Register() {
+export default async function Register() {
   const router = useRouter();
 
   useEffect(() => {

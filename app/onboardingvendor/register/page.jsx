@@ -34,7 +34,7 @@ const VendorForm = () => {
       setError(""); 
     }
     try {
-        const resVendorExists = await fetch("/api/vendor/vendorExists", {
+        const resVendorExists = await fetch("/api/vendorExists", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const VendorForm = () => {
           return;
         }
   
-        const res = await fetch("/api/vendor/vendorregister", {
+        const res = await fetch("/api/vendorregister", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

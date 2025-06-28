@@ -1,36 +1,54 @@
-import { connectMongoDB } from "../../../../lib/mongodb";
-import User from "../../../../models/user";
-import { NextResponse } from "next/server";
+import { connectMongoDB } from "@/lib/mongodb";
+import User from "@/models/user";
 import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    await connectMongoDB();
     const { email, password } = await req.json();
 
-    const user = await User.findOne({ email }).select("_id email password");
-
-    if (!password) {
-      // This is for the registration check
-      return NextResponse.json({ user });
+    // Validate inputs
+    if (!email || !password) {
+      return NextResponse.json(
+        { message: "Email and password are required." },
+        { status: 400 }
+      );
     }
 
-    // This is for the login
+    // Connect to the database
+    await connectMongoDB();
+
+    // Find the user by email
+    const user = await User.findOne({ email }).select(
+      "_id password firstName lastName"
+    );
+
     if (!user) {
-      return NextResponse.json({ message: "Invalid credentials." }, { status: 400 });
+      return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
 
-    const passwordsMatch = await bcrypt.compare(password, user.password);
+    // Compare passwords
+    const isMatched = await bcrypt.compare(password, user.password);
 
-    if (!passwordsMatch) {
-      return NextResponse.json({ message: "Invalid credentials." }, { status: 400 });
+    if (!isMatched) {
+      return NextResponse.json(
+        { message: "Invalid email or password." },
+        { status: 401 }
+      );
     }
 
-    return NextResponse.json({ user: { id: user._id, email: user.email } });
+    // Return user data on success
+    return NextResponse.json({
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Login Error:", error);
     return NextResponse.json(
-      { message: "An error occurred." },
+      { message: "An error occurred during login." },
       { status: 500 }
     );
   }

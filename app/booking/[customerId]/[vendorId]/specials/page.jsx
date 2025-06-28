@@ -88,7 +88,7 @@ const Page = () => {
     const [year, month, day] = date.split("-");
     const monthName = getMonthName(parseInt(month) - 1);
     const res = await fetch(
-      `/api/Customer/getWeeklyMenu?date=${day}&month=${monthName}&year=${year}`
+      `/api/getWeeklyMenu?date=${day}&month=${monthName}&year=${year}`
     );
     const data = await res.json();
     // console.log(data)
@@ -112,7 +112,7 @@ const Page = () => {
 
     try {
       const res = await fetch(
-        `/api/Customer/orderDetailsUser?customerId=${customerId}&day=${day}&month=${monthName}&year=${year}&category=WeeklyMenu`
+        `/api/orderDetailsUser?customerId=${customerId}&day=${day}&month=${monthName}&year=${year}&category=WeeklyMenu`
       );
       const data = await res.json();
       if (res.ok === true) {
@@ -146,7 +146,7 @@ const Page = () => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch("/api/Customer/addLead", {
+      const response = await fetch("/api/addLead", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -168,42 +168,49 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
+    <div className="min-h-screen">
       <Navbar />
-      <div className="flex flex-col w-full mx-auto items-center px-2 py-8 space-y-6">
-        {/* Date Picker */}
-        <div className=" flex justify-center">
+      <div className="block justify-center gap-4 mt-7 overflow-x-hidden">
+        <div className="flex justify-center mb-5 md:mb-3">
           <input
             type="date"
             value={selectedDate.date}
             onChange={handleDateChange}
-            className="border border-gray-300 rounded-lg px-4 py-2 w-72 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded-lg p-2 w-72"
           />
         </div>
 
-        {/* Ad Section (commented) */}
-        {/* <div
-          className="relative rounded-lg overflow-hidden shadow-lg cursor-pointer"
-          onClick={handleClick}
-        >
-          <Image
-            src={Ad}
-            className="w-[350px] md:w-[450px] h-[180px] md:h-[200px] object-cover"
-            alt="Personal Loan Banner"
-          />
-        </div> */}
+        <div className="flex flex-col md:flex-row items-center justify-center space-y-4 my-6">
+          {/* <div
+        className="relative rounded-lg overflow-hidden shadow-lg cursor-pointer"
+        onClick={handleClick}
+      >
+        <Image
+          src={Ad}
+          className="w-[350px] md:w-[450px] h-[180px] md:h-[200px] object-cover"
+          alt="Personal Loan Banner"
+        />
+      </div> */}
+        </div>
 
-        {/* Conditional Content */}
         {loading ? (
-          <Image src={LoadingGif} className="w-20 h-20 mt-10" alt="loader" />
+          <Image
+            src={LoadingGif}
+            className="md:ml-[35%] mt-[7%] md:mt-[5%]"
+            alt="loader"
+          />
         ) : hasOrder ? (
-          <div className="w-full max-w-8xl p-6 bg-white rounded-xl shadow-md">
-            <h2 className="text-2xl font-bold mb-4 text-left">Your Orders</h2>
+          <div className="p-4 bg-white rounded-lg md:mx-40">
+            <h2 className="text-2xl font-bold mb-4 flex justify-start">
+              Your Orders
+            </h2>
             <OrderDetailsUser userOrder={orders} />
           </div>
         ) : (
-          <div className="w-full max-w-8xl p-6 bg-white rounded-xl shadow-md">
-            <h2 className="text-2xl font-bold mb-4 text-center">Menu</h2>
+          <div className="p-4 bg-white rounded-lg md:mx-16 mb-28">
+            <h2 className="text-2xl font-bold mb-3 flex justify-center">
+              Menu
+            </h2>
             <MenuItems menuItems={menuItems} selectedDate={selectedDate} />
           </div>
         )}

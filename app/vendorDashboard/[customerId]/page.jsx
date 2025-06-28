@@ -104,7 +104,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await fetch(`/api/Customer/getAllVendors`);
+        const response = await fetch(`/api/getAllVendors`);
         const data = await response.json();
         setVendors(data.vendors);
         // Set default vendor if available
