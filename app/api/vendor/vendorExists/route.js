@@ -25,13 +25,27 @@ export async function POST(req) {
       return NextResponse.json({ message: "Vendor not found" }, { status: 404 });
     }
 
-
     return NextResponse.json({ vendor });
     
   } catch (error) {
     console.error("Error retrieving vendor:", error);
     return NextResponse.json(
       { message: "An error occurred while retrieving the vendor.", error: error.message }, 
+      { status: 500 }
+    );
+  }
+}
+
+export async function vendorExists(req) {
+  try {
+    await connectMongoDB();
+    const { email } = await req.json();
+    const vendor = await Vendor.findOne({ email }).select("_id");
+    return NextResponse.json({ exists: !!vendor });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "An error occurred while checking for vendor." },
       { status: 500 }
     );
   }
