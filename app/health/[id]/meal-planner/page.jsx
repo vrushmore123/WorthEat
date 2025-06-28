@@ -67,6 +67,7 @@ export default function MealPlanner() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "API Error");
+      console.log("Food Details:", data);
       setResponseData(data);
     } catch (err) {
       console.error(err);
@@ -248,7 +249,9 @@ export default function MealPlanner() {
                         <span className="block text-sm font-medium text-orange-600 mb-1">
                           {meal.meal}
                         </span>
-                        <h4 className="font-bold text-gray-800">{meal.food}</h4>
+                        <h4 className="font-bold text-gray-800">
+                          {meal.food || meal.dish}
+                        </h4>
                       </article>
                     ))}
                   </div>
