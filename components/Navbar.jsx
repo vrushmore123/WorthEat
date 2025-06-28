@@ -72,6 +72,10 @@ const Navbar = ({ mealType, setMealType }) => {
       router.push(`/${route}/${customerId}`);
       return;
     }
+    if (route === "calendar-order") {
+      router.push(`/calendar-order/${customerId}/${vendorId}`);
+      return;
+    }
     router.push(`/booking/${customerId}/${vendorId}/${route}`);
   };
 
@@ -81,6 +85,7 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
+    { name: "Order by date", route: "calendar-order" },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
