@@ -2,22 +2,10 @@
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import {
-  ChevronDown,
-  LogOut,
-  Menu,
-  X,
-  User,
-  ShoppingBag,
-  Coffee,
-  Pizza,
-  UserCircle,
-  HelpCircle,
-} from "lucide-react";
+import { ChevronDown, LogOut, Menu, X, User, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import WortheatIMG from "../assets/NoBG.svg";
-import Home from "@/app/onboardingcustomer/login/page";
 
 const Navbar = ({ mealType, setMealType }) => {
   const { customerId, vendorId } = useParams();
@@ -38,7 +26,7 @@ const Navbar = ({ mealType, setMealType }) => {
 
       try {
         const resUserExists = await fetch(
-          `/api/Customer/getUserInfo?customerId=${customerId}`,
+          `/api/getUserInfo?customerId=${customerId}`,
           {
             method: "GET",
             headers: {
@@ -72,26 +60,18 @@ const Navbar = ({ mealType, setMealType }) => {
 
   const handleNavigation = (route) => {
     setIsSidebarOpen(false);
-
-    if (route === "myOrders") {
-      router.push(`/${route}/${customerId}`);
-      return;
-    }
-
     if (!vendorId || vendorId === "null") {
       toast.error("Vendor ID is missing!");
       return;
     }
-
-    if (
-      ["breakfast", "snacks", "Lunch", "specials", "Lunch/Dinner"].includes(
-        route
-      )
-    ) {
+    if (["breakfast", "snacks", "Lunch", "specials"].includes(route)) {
       router.push(`/booking/${customerId}/${vendorId}/${route}`);
       return;
     }
-
+    if (route === "myOrders") {
+      router.push(`/${route}/${customerId}`);
+      return;
+    }
     router.push(`/booking/${customerId}/${vendorId}/${route}`);
   };
 
@@ -103,10 +83,6 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Specials", route: "specials" },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
-
-  const handleHomeNavigation = () => {
-    router.push(`/booking/${customerId}/${vendorId}/breakfast`);
-  };
 
   return (
     <nav className="sticky top-0 z-40 bg-white shadow-md mb-5">
@@ -127,22 +103,14 @@ const Navbar = ({ mealType, setMealType }) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
             {isMyOrdersPage ? (
-              <>
-                <button
-                  onClick={handleHomeNavigation}
-                  className="flex items-center px-5 py-3 text-base font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors"
-                >
-                  Back to Home
-                </button>
-                <button
-                  key="myOrders"
-                  className="flex-shrink-0 flex items-center "
-                  onClick={() => handleNavigation("myOrders")}
-                >
-                  <ShoppingBag size={20} className="mr-2" />
-                  My Orders
-                </button>
-              </>
+              <button
+                key="myOrders"
+                className="flex items-center px-5 py-3 text-base font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                onClick={() => handleNavigation("myOrders")}
+              >
+                <ShoppingBag size={20} className="mr-2" />
+                My Orders
+              </button>
             ) : (
               navItems.map((item) => (
                 <button
@@ -223,7 +191,7 @@ const Navbar = ({ mealType, setMealType }) => {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={() => setIsSidebarOpen(false)}
           ></div>
 
@@ -239,7 +207,7 @@ const Navbar = ({ mealType, setMealType }) => {
                 onClick={() => setIsSidebarOpen(false)}
                 className="rounded-full p-2 hover:bg-gray-100 text-gray-500"
               >
-                <X size={24} />
+                <X size={28} />
               </button>
             </div>
 
@@ -248,7 +216,7 @@ const Navbar = ({ mealType, setMealType }) => {
                 <div className="p-5 border-b">
                   <div className="flex items-center space-x-4">
                     <div className="bg-orange-100 rounded-full p-3">
-                      <User size={24} className="text-orange-600" />
+                      <User size={28} className="text-orange-600" />
                     </div>
                     <div>
                       <p className="text-lg font-medium">{userName}</p>
@@ -268,7 +236,7 @@ const Navbar = ({ mealType, setMealType }) => {
                     className="flex items-center px-4 py-3 rounded-md text-white bg-orange-500 text-base"
                     onClick={() => handleNavigation("myOrders")}
                   >
-                    <ShoppingBag size={20} className="mr-3" />
+                    <ShoppingBag size={22} className="mr-3" />
                     My Orders
                   </button>
                 ) : (
@@ -282,73 +250,15 @@ const Navbar = ({ mealType, setMealType }) => {
                       }`}
                       onClick={() => handleNavigation(item.route)}
                     >
-                      {item.route === "breakfast" && (
-                        <Coffee size={20} className="mr-3" />
-                      )}
-                      {item.route === "lunch" && (
-                        <Utensils size={20} className="mr-3" />
-                      )}
-                      {item.route === "snacks" && (
-                        <Pizza size={20} className="mr-3" />
-                      )}
-                      {item.route === "dinner" && (
-                        <Moon size={20} className="mr-3" />
-                      )}
-                      {item.route === "beverages" && (
-                        <Cup size={20} className="mr-3" />
-                      )}
-                      {item.route === "myOrders" && (
-                        <ShoppingBag size={20} className="mr-3" />
-                      )}
-                      {item.route === "profile" && (
-                        <UserCircle size={20} className="mr-3" />
-                      )}
-                      {![
-                        "breakfast",
-                        "lunch",
-                        "snacks",
-                        "dinner",
-                        "beverages",
-                        "myOrders",
-                        "profile",
-                      ].includes(item.route) && (
-                        <Menu size={20} className="mr-3" />
+                      {item.icon ? (
+                        <span className="mr-3">{item.icon}</span>
+                      ) : (
+                        <div className="w-5 h-5 mr-3" />
                       )}
                       {item.name}
                     </button>
                   ))
                 )}
-              </div>
-
-              <div className="p-5">
-                <div className="flex flex-col space-y-3">
-                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">
-                    Quick Links
-                  </p>
-                  <button
-                    className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:bg-orange-100 text-base"
-                    onClick={() => handleNavigation("myOrders")}
-                  >
-                    <ShoppingBag size={20} className="mr-3" />
-                    My Orders
-                  </button>
-                  <button
-                    className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:bg-orange-100 text-base"
-                    onClick={() => handleNavigation("profile")}
-                  >
-                    <UserCircle size={20} className="mr-3" />
-                    Profile
-                  </button>
-                  <button
-                    className="flex items-center px-4 py-3 rounded-md text-gray-700 hover:bg-orange-100 text-base"
-                    onClick={() => {
-                      /* handle help */
-                    }}
-                  >
-                    <HelpCircle size={20} className="mr-3" />
-                    Help & Support
-                  </button>
-                </div>
               </div>
 
               {customerId && (

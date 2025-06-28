@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
 
-
 const MenuCard = ({ item, onOrder, onRemove, dayName, isAdded }) => {
   const [quantity, setQuantity] = useState(1);
 

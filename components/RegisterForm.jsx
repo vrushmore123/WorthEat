@@ -9,7 +9,6 @@ export default function RegisterForm() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phoneNo, setPhoneNo] = useState(""); // Added phoneNo state
   const [address, setAddress] = useState("");
   const [company, setCompany] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +26,7 @@ export default function RegisterForm() {
       !password ||
       !lastName ||
       !address ||
-      !company ||
-      !phoneNo // Check if phoneNo is filled
+      !company
     ) {
       setError("All fields are necessary.");
       return;
@@ -41,12 +39,12 @@ export default function RegisterForm() {
 
     try {
       setLoading(true);
-      const resUserExists = await fetch("/api/customer/userExists", {
+      const resUserExists = await fetch("/api/userExists", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, password }),
       });
 
       const { user } = await resUserExists.json();
@@ -56,7 +54,7 @@ export default function RegisterForm() {
         return;
       }
 
-      const res = await fetch("/api/customer/customerregister", {
+      const res = await fetch("/api/customerregister", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,9 +63,7 @@ export default function RegisterForm() {
           firstName,
           lastName,
           email,
-        
           password,
-          phoneNo, // Sending phoneNo to backend
           address,
           company,
         }),
@@ -124,15 +120,6 @@ export default function RegisterForm() {
             className="w-72 md:w-full"
           />
 
-          {/* Phone number input */}
-          <input
-            onChange={(e) => setPhoneNo(e.target.value)}
-            type="text"
-            placeholder="Phone Number"
-            className="w-72 md:w-full"
-          />
-
-
           <div className="relative w-72 md:w-full">
             <input
               onChange={(e) => setPassword(e.target.value)}
@@ -164,7 +151,6 @@ export default function RegisterForm() {
             <option value="">Select Company</option>
             <option value="EKA Mobility">EKA Mobility</option>
             <option value="Liebherr">Liebherr</option>
-            <option value="Zinnia">Zinnia</option>
           </select>
 
           <button className="bg-orange-600 text-white font-bold cursor-pointer px-6 py-2 rounded-md">
