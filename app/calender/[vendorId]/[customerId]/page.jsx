@@ -74,10 +74,18 @@ const CalendarOrder = ({
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", food.id);
     setDraggedItem(food);
+
+    // Add a custom drag image or styling
+    const dragElement = e.target.cloneNode(true);
+    dragElement.style.transform = "rotate(5deg)";
+    dragElement.style.opacity = "0.8";
+    e.dataTransfer.setDragImage(dragElement, 50, 50);
   };
 
   const handleDrop = (e, dateStr) => {
     e.preventDefault();
+    e.stopPropagation();
+
     let foodToAdd = draggedItem;
     if (!foodToAdd) {
       const id = e.dataTransfer.getData("text/plain");
@@ -93,7 +101,10 @@ const CalendarOrder = ({
       else list.push({ food: foodToAdd, qty: 1 });
       return { ...prev, [dateStr]: list };
     });
+
     setDraggedItem(null);
+    setHoveredDate(null);
+
     setTimeout(() => {
       setDropAnimations((prev) => {
         const newState = { ...prev };
@@ -101,6 +112,32 @@ const CalendarOrder = ({
         return newState;
       });
     }, 600);
+  };
+
+  const handleDragOver = (e, dateKey) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "move";
+    setHoveredDate(dateKey);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Only clear hover if leaving the calendar area completely
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      setHoveredDate(null);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    setHoveredDate(null);
   };
 
   const updateQty = (dateStr, foodId, newQty) => {
@@ -370,9 +407,13 @@ const CalendarOrder = ({
                       key={f.id}
                       food={f}
                       onDragStart={handleDragStart}
-                      onDragEnd={() => setDraggedItem(null)}
+                      onDragEnd={handleDragEnd}
                       onClick={handleFoodItemClick}
                       compact={true}
+                      draggable={true}
+                      style={{
+                        cursor: "grab",
+                      }}
                     />
                   ))}
                 </div>
@@ -410,21 +451,26 @@ const CalendarOrder = ({
                         return (
                           <motion.div
                             key={key}
-                            className={`relative bg-white border border-gray-200 rounded-md p-2 hover:shadow-md transition-all cursor-pointer group flex flex-col h-full`}
+                            className={`relative bg-white border-2 rounded-md p-2 hover:shadow-md transition-all cursor-pointer group flex flex-col h-full ${
+                              hoveredDate === key
+                                ? "border-amber-400 bg-amber-50 shadow-lg scale-102"
+                                : "border-gray-200 hover:border-gray-300"
+                            }`}
                             onClick={() => openDateModal(key)}
-                            onDragOver={(e) => {
-                              e.preventDefault();
-                              e.dataTransfer.dropEffect = "move";
-                              setHoveredDate(key);
-                            }}
-                            onDragLeave={() => setHoveredDate(null)}
+                            onDragOver={(e) => handleDragOver(e, key)}
+                            onDragLeave={handleDragLeave}
                             onDrop={(e) => {
                               handleDrop(e, key);
-                              setHoveredDate(null);
                             }}
+                            onDragEnd={handleDragEnd}
                             tabIndex={0}
                             role="button"
                             aria-label={`Calendar date ${d.toLocaleDateString()}`}
+                            style={{
+                              minHeight: "120px",
+                              position: "relative",
+                              zIndex: hoveredDate === key ? 10 : 1,
+                            }}
                           >
                             <div className="flex justify-between items-center mb-2">
                               <div className="flex items-center gap-1.5">
@@ -504,12 +550,20 @@ const CalendarOrder = ({
                               <motion.div
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="absolute inset-0 bg-amber-50 border-2 border-amber-400 rounded-md flex items-center justify-center"
+                                className="absolute inset-1 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-dashed border-amber-400 rounded-md flex items-center justify-center z-20 pointer-events-none"
+                                style={{
+                                  backdropFilter: "blur(2px)",
+                                }}
                               >
-                                <div className="text-center">
-                                  <Plus className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-                                  <span className="text-sm font-medium text-amber-700">
+                                <div className="text-center p-2">
+                                  <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg">
+                                    <Plus className="w-6 h-6 text-white" />
+                                  </div>
+                                  <span className="text-sm font-semibold text-amber-800 block">
                                     Drop to add
+                                  </span>
+                                  <span className="text-xs text-amber-600 block mt-1">
+                                    {draggedItem.name}
                                   </span>
                                 </div>
                               </motion.div>
@@ -558,23 +612,22 @@ const CalendarOrder = ({
                                 key={key}
                                 className={`${getDateClasses(d, plans)} ${
                                   isExpanded ? "expanded" : ""
-                                } relative bg-white border border-gray-200 rounded p-1 hover:shadow-sm transition-all cursor-pointer group flex flex-col h-full`}
+                                } relative bg-white border-2 rounded p-1 hover:shadow-sm transition-all cursor-pointer group flex flex-col h-full ${
+                                  hoveredDate === key
+                                    ? "border-amber-400 bg-amber-50 shadow-lg scale-105"
+                                    : "border-gray-200 hover:border-gray-300"
+                                }`}
                                 style={{
                                   minHeight: isExpanded ? "160px" : "80px",
+                                  zIndex: hoveredDate === key ? 10 : 1,
                                 }}
-                                onDragOver={(e) => {
-                                  e.preventDefault();
-                                  e.dataTransfer.dropEffect = "move";
-                                  setHoveredDate(key);
-                                }}
-                                onDragLeave={() => setHoveredDate(null)}
+                                onDragOver={(e) => handleDragOver(e, key)}
+                                onDragLeave={handleDragLeave}
                                 onDrop={(e) => {
                                   handleDrop(e, key);
-                                  setHoveredDate(null);
                                 }}
+                                onDragEnd={handleDragEnd}
                                 onClick={() => {
-                                  // Fixed: Add proper click handler to open modal for non-mobile view
-                                  // and handle expansion for mobile view
                                   if (isMobile) {
                                     !isExpanded && toggleDateExpansion(key);
                                   } else if (plans.length > 0) {
@@ -584,7 +637,7 @@ const CalendarOrder = ({
                                 animate={
                                   dropAnimations[key]
                                     ? {
-                                        scale: [1, 1.02, 1],
+                                        scale: [1, 1.05, 1],
                                         borderColor: [
                                           "rgb(229, 231, 235)",
                                           "rgb(245, 158, 11)",

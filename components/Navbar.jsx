@@ -94,7 +94,7 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
-   
+   { name: "Plan Your Order", route: "planYourOrder" },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
