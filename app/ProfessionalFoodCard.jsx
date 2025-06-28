@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Star, Clock, Leaf, Award, AlertCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Star, Clock, Leaf, Award, AlertCircle } from "lucide-react";
 
-const ProfessionalFoodCard = ({ 
-  food, 
-  onDragStart, 
-  onDragEnd, 
+const ProfessionalFoodCard = ({
+  food,
+  onDragStart,
+  onDragEnd,
   onClick,
-  compact = false 
+  compact = false,
 }) => {
   const [imageError, setImageError] = useState(false);
 
   // Determine meal type for color coding
   const getMealType = () => {
-    if (!food.isAvailable) return 'unavailable';
-    if (food.isVegan || food.isVegetarian) return 'vegetarian';
-    if (food.chefSpecial || food.isPopular) return 'special';
-    return 'regular';
+    if (!food.isAvailable) return "unavailable";
+    if (food.isVegan || food.isVegetarian) return "vegetarian";
+    if (food.chefSpecial || food.isPopular) return "special";
+    return "regular";
   };
 
   const mealType = getMealType();
@@ -47,7 +47,9 @@ const ProfessionalFoodCard = ({
 
   return (
     <motion.div
-      className={`food-item-card-professional ${mealType} group relative ${compact ? 'compact' : ''}`}
+      className={`food-item-card-professional ${mealType} group relative ${
+        compact ? "compact" : ""
+      }`}
       draggable={food.isAvailable}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -58,7 +60,7 @@ const ProfessionalFoodCard = ({
       role="button"
       aria-label={`View details for ${food.name}`}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           handleClick(e);
         }
@@ -69,7 +71,9 @@ const ProfessionalFoodCard = ({
         <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-xl">
           <div className="text-center">
             <AlertCircle className="w-6 h-6 text-red-500 mx-auto mb-1" />
-            <span className="text-sm font-medium text-red-600">Out of Stock</span>
+            <span className="text-sm font-medium text-red-600">
+              Out of Stock
+            </span>
           </div>
         </div>
       )}
@@ -136,7 +140,8 @@ const ProfessionalFoodCard = ({
         {/* Description */}
         {!compact && (
           <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-            {food.description || "Delicious and carefully prepared with fresh ingredients."}
+            {food.description ||
+              "Delicious and carefully prepared with fresh ingredients."}
           </p>
         )}
 
@@ -152,12 +157,10 @@ const ProfessionalFoodCard = ({
         {/* Price and Action */}
         <div className="flex items-center justify-between pt-2 border-t border-gray-100">
           <div className="flex items-baseline gap-1">
-            <span className="font-bold text-gray-900">
-              {food.price}
-            </span>
+            <span className="font-bold text-gray-900">{food.price}</span>
             <span className="text-xs text-gray-500">Rs</span>
           </div>
-          
+
           <button
             className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-colors"
             onClick={(e) => {

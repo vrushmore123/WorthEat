@@ -9,9 +9,11 @@ import {
   X,
   User,
   ShoppingBag,
-  HeartPulse,
+  Bot,
   Calendar,
-  UtensilsCrossed
+  UtensilsCrossed,
+  Sparkles,
+  Star,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -76,7 +78,7 @@ const Navbar = ({ mealType, setMealType }) => {
       return;
     }
     if (route === "planYourOrder") {
-      router.push(`/calender/${vendorId}/${customerId}`); // Exception for "Plan Your Order"
+      router.push(`/calender/${vendorId}/${customerId}`);
       return;
     }
     if (["breakfast", "snacks", "Lunch", "specials"].includes(route)) {
@@ -107,27 +109,47 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
-    { name: "Plan Order", route: "planYourOrder" },
-    { name: "Discounted Food", route: "discount" },
-    { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
+    {
+      name: "Plan Order",
+      route: "planYourOrder",
+      icon: <Calendar size={18} />,
+    },
+    { name: "Discounts", route: "discount" },
+    { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={18} /> },
   ];
 
-  // Health options
-  const healthOptions = [
-    { name: "Dish Recommender", route: "dish-recommender" },
-    { name: "Meal Planner", route: "meal-planner" },
-    { name: "Nutrition Planner", route: "nutrition-checker" },
-    { name: "Dish planner", route: "recommend" },
+  // AI Meal Planner options
+  const aiMealPlannerOptions = [
+    {
+      name: "Smart Dish Recommender",
+      route: "dish-recommender",
+      description: "AI-powered dish suggestions",
+    },
+    {
+      name: "Personalized Meal Planner",
+      route: "meal-planner",
+      description: "Custom meal plans for you",
+    },
+    {
+      name: "Nutrition Analyzer",
+      route: "nutrition-checker",
+      description: "Track your nutrition goals",
+    },
+    {
+      name: "Diet Optimizer",
+      route: "recommend",
+      description: "Optimize your daily diet",
+    },
   ];
 
   return (
-    <nav className="sticky top-0 z-40 bg-white shadow-md mb-5">
+    <nav className="sticky top-0 z-40 bg-white shadow-lg border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20 ">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link
             href={`/booking/${customerId}/${vendorId}/breakfast`}
-            className="flex-shrink-0 flex items-center "
+            className="flex-shrink-0 flex items-center transition-transform duration-200 hover:scale-105"
           >
             <Image
               src={WortheatIMG}
@@ -137,32 +159,33 @@ const Navbar = ({ mealType, setMealType }) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center space-x-1">
             {isMyOrdersPage ? (
               <>
                 <button
                   key="myOrders"
-                  className="flex items-center px-5 py-3 text-base font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                  className="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-all duration-200 shadow-sm"
                   onClick={() => handleNavigation("myOrders")}
                 >
-                  <ShoppingBag size={20} className="mr-2" />
+                  <ShoppingBag size={18} className="mr-2" />
                   My Orders
                 </button>
-                <div className="relative">
+
+                {/* AI Meal Planner - Featured */}
+                <div className="relative ml-4">
                   <button
-                    className={`flex items-center px-5 py-3 text-base font-medium rounded-md ${
-                      isHealthDropdownOpen
-                        ? "bg-orange-100 text-orange-600"
-                        : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
-                    } transition-colors`}
+                    className={`flex items-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 ${
+                      isHealthDropdownOpen ? "ring-2 ring-purple-300" : ""
+                    }`}
                     onClick={() =>
                       setIsHealthDropdownOpen(!isHealthDropdownOpen)
                     }
                   >
-                    <UtensilsCrossed size={22} className="mr-3" />
-                    Meal Planner
+                    <Bot size={20} className="mr-2" />
+                    <Sparkles size={16} className="mr-1" />
+                    AI Meal Planner
                     <ChevronDown
-                      size={18}
+                      size={16}
                       className={`ml-2 transition-transform duration-200 ${
                         isHealthDropdownOpen ? "transform rotate-180" : ""
                       }`}
@@ -170,15 +193,27 @@ const Navbar = ({ mealType, setMealType }) => {
                   </button>
 
                   {isHealthDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all z-50">
-                      <div className="py-2">
-                        {healthOptions.map((option) => (
+                    <div className="absolute right-0 mt-3 w-80 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-10 transition-all z-50 border border-gray-100">
+                      <div className="p-3">
+                        <div className="flex items-center mb-3 px-2">
+                          <Bot className="text-purple-600 mr-2" size={18} />
+                          <span className="text-sm font-semibold text-gray-800">
+                            AI-Powered Features
+                          </span>
+                          <Star className="text-yellow-500 ml-auto" size={16} />
+                        </div>
+                        {aiMealPlannerOptions.map((option, index) => (
                           <button
                             key={option.route}
                             onClick={() => handleHealthNavigation(option.route)}
-                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                            className="block w-full text-left px-3 py-3 mb-1 text-sm rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-200 group"
                           >
-                            {option.name}
+                            <div className="font-medium text-gray-800 group-hover:text-purple-700">
+                              {option.name}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1 group-hover:text-purple-600">
+                              {option.description}
+                            </div>
                           </button>
                         ))}
                       </div>
@@ -188,35 +223,21 @@ const Navbar = ({ mealType, setMealType }) => {
               </>
             ) : (
               <>
-                {navItems.map((item) => (
+                {/* AI Meal Planner - Featured (Primary Position) */}
+                <div className="relative mr-2">
                   <button
-                    key={item.route}
-                    className={`flex items-center px-5 py-3 text-base font-medium rounded-md transition-colors ${
-                      pathname.includes(item.route)
-                        ? "bg-orange-500 text-white"
-                        : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
+                    className={`flex items-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 ${
+                      isHealthDropdownOpen ? "ring-2 ring-purple-300" : ""
                     }`}
-                    onClick={() => handleNavigation(item.route)}
-                  >
-                    {item.icon && <span className="mr-2">{item.icon}</span>}
-                    {item.name}
-                  </button>
-                ))}
-                <div className="relative">
-                  <button
-                    className={`flex items-center px-5 py-3 text-base font-medium rounded-md ${
-                      isHealthDropdownOpen
-                        ? "bg-orange-100 text-orange-600"
-                        : "text-gray-700 hover:bg-orange-100 hover:text-orange-600"
-                    } transition-colors`}
                     onClick={() =>
                       setIsHealthDropdownOpen(!isHealthDropdownOpen)
                     }
                   >
-                    <UtensilsCrossed size={22} className="mr-3" />
-                    Meal Planner
+                    <Bot size={20} className="mr-2" />
+                    <Sparkles size={16} className="mr-1" />
+                    AI Meal Planner
                     <ChevronDown
-                      size={18}
+                      size={16}
                       className={`ml-2 transition-transform duration-200 ${
                         isHealthDropdownOpen ? "transform rotate-180" : ""
                       }`}
@@ -224,20 +245,50 @@ const Navbar = ({ mealType, setMealType }) => {
                   </button>
 
                   {isHealthDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all z-50">
-                      <div className="py-2">
-                        {healthOptions.map((option) => (
+                    <div className="absolute left-0 mt-3 w-80 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-10 transition-all z-50 border border-gray-100">
+                      <div className="p-3">
+                        <div className="flex items-center mb-3 px-2">
+                          <Bot className="text-purple-600 mr-2" size={18} />
+                          <span className="text-sm font-semibold text-gray-800">
+                            AI-Powered Features
+                          </span>
+                          <Star className="text-yellow-500 ml-auto" size={16} />
+                        </div>
+                        {aiMealPlannerOptions.map((option, index) => (
                           <button
                             key={option.route}
                             onClick={() => handleHealthNavigation(option.route)}
-                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                            className="block w-full text-left px-3 py-3 mb-1 text-sm rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-200 group"
                           >
-                            {option.name}
+                            <div className="font-medium text-gray-800 group-hover:text-purple-700">
+                              {option.name}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1 group-hover:text-purple-600">
+                              {option.description}
+                            </div>
                           </button>
                         ))}
                       </div>
                     </div>
                   )}
+                </div>
+
+                {/* Regular Navigation Items */}
+                <div className="flex items-center space-x-1">
+                  {navItems.map((item) => (
+                    <button
+                      key={item.route}
+                      className={`flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+                        pathname.includes(item.route)
+                          ? "bg-orange-500 text-white shadow-sm"
+                          : "text-gray-700 hover:bg-orange-50 hover:text-orange-600"
+                      }`}
+                      onClick={() => handleNavigation(item.route)}
+                    >
+                      {item.icon && <span className="mr-2">{item.icon}</span>}
+                      {item.name}
+                    </button>
+                  ))}
                 </div>
               </>
             )}
@@ -245,18 +296,26 @@ const Navbar = ({ mealType, setMealType }) => {
 
           {/* User Profile Section */}
           {customerId && (
-            <div className="hidden md:flex items-center">
+            <div className="hidden lg:flex items-center ml-4">
               <div className="relative">
                 <button
-                  className={`flex items-center px-5 py-3 text-base font-medium rounded-md text-gray-700 ${
-                    isDropdownOpen ? "bg-gray-100" : "hover:bg-gray-100"
-                  } transition-colors`}
+                  className={`flex items-center px-4 py-2.5 text-sm font-medium rounded-lg border transition-all duration-200 ${
+                    isDropdownOpen
+                      ? "bg-gray-50 border-gray-300 shadow-sm"
+                      : "text-gray-700 border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                  }`}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <User size={20} className="mr-2" />
-                  <span className="max-w-[150px] truncate">{userName}</span>
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mr-3">
+                    <User size={16} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="max-w-[120px] truncate font-medium">
+                      {userName}
+                    </div>
+                  </div>
                   <ChevronDown
-                    size={18}
+                    size={16}
                     className={`ml-2 transition-transform duration-200 ${
                       isDropdownOpen ? "transform rotate-180" : ""
                     }`}
@@ -264,21 +323,28 @@ const Navbar = ({ mealType, setMealType }) => {
                 </button>
 
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all">
-                    <div className="py-4 px-5 border-b border-gray-100">
-                      <p className="text-base font-medium text-gray-900">
-                        {userName}
-                      </p>
-                      <p className="text-sm text-gray-500 mt-1 truncate">
-                        {email}
-                      </p>
+                  <div className="absolute right-0 mt-2 w-72 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-10 transition-all border border-gray-100">
+                    <div className="p-4 border-b border-gray-100">
+                      <div className="flex items-center">
+                        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
+                          <User size={20} className="text-white" />
+                        </div>
+                        <div className="ml-3">
+                          <p className="text-sm font-semibold text-gray-900">
+                            {userName}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1 truncate max-w-[180px]">
+                            {email}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="py-2">
+                    <div className="p-2">
                       <button
                         onClick={handleLogOut}
-                        className="flex w-full items-center px-5 py-3 text-base text-red-600 hover:bg-gray-100"
+                        className="flex w-full items-center px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       >
-                        <LogOut size={20} className="mr-2" />
+                        <LogOut size={18} className="mr-3" />
                         Sign out
                       </button>
                     </div>
@@ -289,12 +355,12 @@ const Navbar = ({ mealType, setMealType }) => {
           )}
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="inline-flex items-center justify-center p-3 rounded-md text-gray-700 hover:text-orange-500 hover:bg-gray-100 focus:outline-none"
+              className="inline-flex items-center justify-center p-2.5 rounded-lg text-gray-700 hover:text-orange-500 hover:bg-gray-100 focus:outline-none transition-colors"
             >
-              <Menu size={28} />
+              <Menu size={24} />
             </button>
           </div>
         </div>
@@ -305,13 +371,13 @@ const Navbar = ({ mealType, setMealType }) => {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
             onClick={() => setIsSidebarOpen(false)}
           ></div>
 
           {/* Sidebar */}
-          <div className="fixed top-0 right-0 w-80 h-full bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out">
-            <div className="flex items-center justify-between p-5 border-b">
+          <div className="fixed top-0 right-0 w-80 h-full bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
               <Image
                 src={WortheatIMG}
                 alt="Wortheat Logo"
@@ -319,83 +385,94 @@ const Navbar = ({ mealType, setMealType }) => {
               />
               <button
                 onClick={() => setIsSidebarOpen(false)}
-                className="rounded-full p-2 hover:bg-gray-100 text-gray-500"
+                className="rounded-full p-2 hover:bg-gray-100 text-gray-500 transition-colors"
               >
-                <X size={28} />
+                <X size={24} />
               </button>
             </div>
 
             <div className="overflow-y-auto h-full pb-24">
+              {/* User Profile in Mobile */}
               {customerId && (
-                <div className="p-5 border-b">
+                <div className="p-5 border-b border-gray-100">
                   <div className="flex items-center space-x-4">
-                    <div className="bg-orange-100 rounded-full p-3">
-                      <User size={28} className="text-orange-600" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
+                      <User size={20} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-lg font-medium">{userName}</p>
-                      <p className="text-sm text-gray-500 truncate">{email}</p>
+                      <p className="text-base font-semibold text-gray-900">
+                        {userName}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate max-w-[200px]">
+                        {email}
+                      </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              <div className="p-5 flex flex-col space-y-3">
-                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                  Menu
-                </p>
-                {isMyOrdersPage ? (
-                  <>
+              <div className="p-5">
+                {/* AI Meal Planner - Featured in Mobile */}
+                <div className="mb-6">
+                  <button
+                    className="flex items-center justify-center w-full px-4 py-3 mb-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg"
+                    onClick={() =>
+                      setIsHealthDropdownOpen(!isHealthDropdownOpen)
+                    }
+                  >
+                    <Bot size={20} className="mr-2" />
+                    <Sparkles size={16} className="mr-1" />
+                    AI Meal Planner
+                    <ChevronDown
+                      size={16}
+                      className={`ml-auto transition-transform duration-200 ${
+                        isHealthDropdownOpen ? "transform rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isHealthDropdownOpen && (
+                    <div className="space-y-2 ml-4">
+                      {aiMealPlannerOptions.map((option) => (
+                        <button
+                          key={option.route}
+                          onClick={() => handleHealthNavigation(option.route)}
+                          className="flex flex-col items-start w-full px-3 py-2.5 text-sm rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-200"
+                        >
+                          <div className="font-medium text-gray-800">
+                            {option.name}
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            {option.description}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Regular Menu Items */}
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                    Menu
+                  </p>
+                  {isMyOrdersPage ? (
                     <button
                       key="myOrders"
-                      className="flex items-center px-4 py-3 rounded-md text-white bg-orange-500 text-base"
+                      className="flex items-center w-full px-4 py-3 rounded-lg text-white bg-orange-500 text-sm font-medium"
                       onClick={() => handleNavigation("myOrders")}
                     >
-                      <ShoppingBag size={22} className="mr-3" />
+                      <ShoppingBag size={20} className="mr-3" />
                       My Orders
                     </button>
-                    <div className="border-t border-gray-200 pt-3 mt-3">
-                      <button
-                        className="flex items-center px-4 py-3 rounded-md text-base text-gray-700 hover:bg-orange-100 w-full"
-                        onClick={() =>
-                          setIsHealthDropdownOpen(!isHealthDropdownOpen)
-                        }
-                      >
-                        <UtensilsCrossed size={22} className="mr-3" />
-                        Meal Planner
-                        <ChevronDown
-                          size={18}
-                          className={`ml-auto transition-transform duration-200 ${
-                            isHealthDropdownOpen ? "transform rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {isHealthDropdownOpen && (
-                        <div className="ml-8 mt-2 space-y-2">
-                          {healthOptions.map((option) => (
-                            <button
-                              key={option.route}
-                              onClick={() =>
-                                handleHealthNavigation(option.route)
-                              }
-                              className="flex items-center px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-orange-50 w-full"
-                            >
-                              {option.name}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {navItems.map((item) => (
+                  ) : (
+                    navItems.map((item) => (
                       <button
                         key={item.route}
-                        className={`flex items-center px-4 py-3 rounded-md text-base ${
+                        className={`flex items-center w-full px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                           pathname.includes(item.route)
                             ? "bg-orange-500 text-white"
-                            : "text-gray-700 hover:bg-orange-100"
+                            : "text-gray-700 hover:bg-orange-50 hover:text-orange-600"
                         }`}
                         onClick={() => handleNavigation(item.route)}
                       >
@@ -406,50 +483,19 @@ const Navbar = ({ mealType, setMealType }) => {
                         )}
                         {item.name}
                       </button>
-                    ))}
-                    <div className="border-t border-gray-200 pt-3 mt-3">
-                      <button
-                        className="flex items-center px-4 py-3 rounded-md text-base text-gray-700 hover:bg-orange-100 w-full"
-                        onClick={() =>
-                          setIsHealthDropdownOpen(!isHealthDropdownOpen)
-                        }
-                      >
-                        <HeartPulse size={22} className="mr-3" />
-                        Health
-                        <ChevronDown
-                          size={18}
-                          className={`ml-auto transition-transform duration-200 ${
-                            isHealthDropdownOpen ? "transform rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {isHealthDropdownOpen && (
-                        <div className="ml-8 mt-2 space-y-2">
-                          {healthOptions.map((option) => (
-                            <button
-                              key={option.route}
-                              onClick={() =>
-                                handleHealthNavigation(option.route)
-                              }
-                              className="flex items-center px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-orange-50 w-full"
-                            >
-                              {option.name}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
+                    ))
+                  )}
+                </div>
               </div>
 
+              {/* Sign Out Button */}
               {customerId && (
-                <div className="absolute bottom-0 left-0 right-0 p-5 border-t bg-white">
+                <div className="absolute bottom-0 left-0 right-0 p-5 border-t border-gray-100 bg-white">
                   <button
                     onClick={handleLogOut}
-                    className="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors"
+                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors"
                   >
-                    <LogOut size={20} className="mr-2" />
+                    <LogOut size={18} className="mr-2" />
                     Sign out
                   </button>
                 </div>

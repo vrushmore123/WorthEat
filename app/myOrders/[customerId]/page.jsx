@@ -166,7 +166,9 @@ const OrderCard = ({ order }) => {
             </p>
             <p className="text-gray-800 mt-1">
               Total:{" "}
-              <span className="font-bold text-black">Rs{order.totalAmount}</span>
+              <span className="font-bold text-black">
+                Rs{order.totalAmount}
+              </span>
             </p>
             <p className="text-green-700">
               After Discount:{" "}

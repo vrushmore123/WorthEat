@@ -152,7 +152,9 @@ const FoodItemModal = ({
                   <div className="text-right">
                     <div className="text-xl sm:text-2xl font-bold text-white">
                       {item.price}{" "}
-                      <span className="text-sm sm:text-lg text-gray-200">Rs</span>
+                      <span className="text-sm sm:text-lg text-gray-200">
+                        Rs
+                      </span>
                     </div>
                   </div>
                 </div>

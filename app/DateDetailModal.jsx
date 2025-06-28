@@ -1,57 +1,60 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  X, 
-  Plus, 
-  Minus, 
-  Clock, 
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  X,
+  Plus,
+  Minus,
+  Clock,
   Calendar,
   Trash2,
   ShoppingCart,
-  MapPin
-} from 'lucide-react';
+  MapPin,
+} from "lucide-react";
 
-const DateDetailModal = ({ 
-  isOpen, 
-  onClose, 
-  date, 
-  meals, 
-  onUpdateQuantity, 
+const DateDetailModal = ({
+  isOpen,
+  onClose,
+  date,
+  meals,
+  onUpdateQuantity,
   onRemoveMeal,
   onAddToCart,
   deliveryTime,
   onChangeDeliveryTime,
   availableTimeSlots = [
     "8:00 AM - 9:00 AM",
-    "9:00 AM - 10:00 AM", 
+    "9:00 AM - 10:00 AM",
     "12:00 PM - 1:00 PM",
     "1:00 PM - 2:00 PM",
     "6:00 PM - 7:00 PM",
-    "7:00 PM - 8:00 PM"
-  ]
+    "7:00 PM - 8:00 PM",
+  ],
 }) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   if (!isOpen || !date || !meals) return null;
 
   const totalMeals = meals.reduce((sum, meal) => sum + meal.qty, 0);
-  const totalPrice = meals.reduce((sum, meal) => sum + (meal.food.price * meal.qty), 0);
-  const dateStr = new Date(date).toLocaleDateString('en-US', { 
-    weekday: 'long', 
-    month: 'long', 
-    day: 'numeric' 
+  const totalPrice = meals.reduce(
+    (sum, meal) => sum + meal.food.price * meal.qty,
+    0
+  );
+  const dateStr = new Date(date).toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
   });
 
   const handleAddAllToCart = async () => {
     setIsAddingToCart(true);
-    
+
     // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    meals.forEach(meal => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    meals.forEach((meal) => {
       onAddToCart(meal.food, meal.qty, date);
     });
-    
+
     setIsAddingToCart(false);
     onClose();
   };
@@ -79,7 +82,7 @@ const DateDetailModal = ({
                     </h2>
                     <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
                       <ShoppingCart className="w-3 h-3" />
-                      {totalMeals} meal{totalMeals !== 1 ? 's' : ''} planned
+                      {totalMeals} meal{totalMeals !== 1 ? "s" : ""} planned
                     </p>
                   </div>
                 </div>
@@ -106,7 +109,9 @@ const DateDetailModal = ({
                     className="block w-full border-gray-200 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   >
                     {availableTimeSlots.map((slot) => (
-                      <option key={slot} value={slot}>{slot}</option>
+                      <option key={slot} value={slot}>
+                        {slot}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -159,19 +164,23 @@ const DateDetailModal = ({
                       <div className="flex items-center gap-3">
                         <div className="flex items-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full overflow-hidden shadow-sm">
                           <button
-                            onClick={() => onUpdateQuantity(meal.food.id, meal.qty - 1)}
+                            onClick={() =>
+                              onUpdateQuantity(meal.food.id, meal.qty - 1)
+                            }
                             className="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200"
                             disabled={meal.qty <= 1}
                           >
                             <Minus className="w-4 h-4" />
                           </button>
-                          
+
                           <span className="px-4 py-2 font-semibold text-gray-800 dark:text-gray-200 min-w-[3rem] text-center">
                             {meal.qty}
                           </span>
-                          
+
                           <button
-                            onClick={() => onUpdateQuantity(meal.food.id, meal.qty + 1)}
+                            onClick={() =>
+                              onUpdateQuantity(meal.food.id, meal.qty + 1)
+                            }
                             className="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-colors duration-200"
                           >
                             <Plus className="w-4 h-4" />
@@ -228,8 +237,8 @@ const DateDetailModal = ({
                   disabled={isAddingToCart || meals.length === 0}
                   className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                     isAddingToCart || meals.length === 0
-                      ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-orange-500/25'
+                      ? "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                      : "bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-orange-500/25"
                   }`}
                 >
                   {isAddingToCart ? (

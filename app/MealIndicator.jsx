@@ -1,12 +1,12 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 const MealIndicator = ({ meals, maxVisible = 3 }) => {
   if (!meals || meals.length === 0) return null;
 
   // Group meals by unique food items
   const uniqueMeals = meals.reduce((acc, meal) => {
-    const existing = acc.find(m => m.food.id === meal.food.id);
+    const existing = acc.find((m) => m.food.id === meal.food.id);
     if (existing) {
       existing.totalQty += meal.qty;
     } else {
@@ -21,14 +21,14 @@ const MealIndicator = ({ meals, maxVisible = 3 }) => {
 
   // Color palette for different meals
   const colors = [
-    'bg-orange-500',
-    'bg-blue-500', 
-    'bg-green-500',
-    'bg-purple-500',
-    'bg-pink-500',
-    'bg-indigo-500',
-    'bg-red-500',
-    'bg-yellow-500'
+    "bg-orange-500",
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-red-500",
+    "bg-yellow-500",
   ];
 
   return (
@@ -42,15 +42,19 @@ const MealIndicator = ({ meals, maxVisible = 3 }) => {
           className="relative group"
         >
           {/* Meal Avatar */}
-          <div className={`w-6 h-6 rounded-full border-2 border-white shadow-sm overflow-hidden ${colors[index % colors.length]} flex items-center justify-center`}>
+          <div
+            className={`w-6 h-6 rounded-full border-2 border-white shadow-sm overflow-hidden ${
+              colors[index % colors.length]
+            } flex items-center justify-center`}
+          >
             <img
               src={meal.food.imageUrl}
               alt={meal.food.name}
               className="w-full h-full object-cover"
               onError={(e) => {
                 // Fallback to colored circle with first letter
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
+                e.target.style.display = "none";
+                e.target.nextSibling.style.display = "flex";
               }}
             />
             <div className="hidden w-full h-full items-center justify-center text-white text-xs font-bold">
@@ -65,7 +69,7 @@ const MealIndicator = ({ meals, maxVisible = 3 }) => {
               animate={{ scale: 1 }}
               className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border border-white shadow-sm"
             >
-              {meal.totalQty > 9 ? '9+' : meal.totalQty}
+              {meal.totalQty > 9 ? "9+" : meal.totalQty}
             </motion.div>
           )}
 
@@ -84,7 +88,11 @@ const MealIndicator = ({ meals, maxVisible = 3 }) => {
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: maxVisible * 0.1, type: "spring", stiffness: 400 }}
+          transition={{
+            delay: maxVisible * 0.1,
+            type: "spring",
+            stiffness: 400,
+          }}
           className="w-6 h-6 bg-gray-400 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm"
         >
           +{remainingCount}
@@ -93,14 +101,23 @@ const MealIndicator = ({ meals, maxVisible = 3 }) => {
 
       {/* Dietary Indicators */}
       <div className="ml-1 flex gap-0.5">
-        {uniqueMeals.some(m => m.food.isVegan) && (
-          <div className="w-2 h-2 bg-green-400 rounded-full" title="Vegan options available" />
+        {uniqueMeals.some((m) => m.food.isVegan) && (
+          <div
+            className="w-2 h-2 bg-green-400 rounded-full"
+            title="Vegan options available"
+          />
         )}
-        {uniqueMeals.some(m => m.food.isGlutenFree) && (
-          <div className="w-2 h-2 bg-blue-400 rounded-full" title="Gluten-free options available" />
+        {uniqueMeals.some((m) => m.food.isGlutenFree) && (
+          <div
+            className="w-2 h-2 bg-blue-400 rounded-full"
+            title="Gluten-free options available"
+          />
         )}
-        {uniqueMeals.some(m => m.food.isKeto) && (
-          <div className="w-2 h-2 bg-purple-400 rounded-full" title="Keto options available" />
+        {uniqueMeals.some((m) => m.food.isKeto) && (
+          <div
+            className="w-2 h-2 bg-purple-400 rounded-full"
+            title="Keto options available"
+          />
         )}
       </div>
     </div>

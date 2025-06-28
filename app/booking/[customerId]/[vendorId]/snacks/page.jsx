@@ -180,7 +180,6 @@ const SnacksMenu = () => {
         time: d.toLocaleTimeString(),
       },
     };
-   
 
     try {
       const response = await fetch("/api/addOrders", {

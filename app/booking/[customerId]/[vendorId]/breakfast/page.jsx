@@ -153,8 +153,6 @@ const BreakfastMenu = () => {
       },
     };
 
-    
-
     try {
       const response = await fetch("/api/addOrders", {
         method: "POST",
