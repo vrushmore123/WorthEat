@@ -139,7 +139,7 @@ const CalendarCheckoutPage = () => {
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="text-sm text-gray-600 mb-1">Total Amount</div>
               <div className="text-2xl font-bold text-green-600">
-                {(orderData.grandTotal || 0).toFixed(0)} DKK
+                {(orderData.grandTotal || 0).toFixed(0)} Rs
               </div>
             </div>
 
@@ -244,7 +244,7 @@ const CalendarCheckoutPage = () => {
                               {dayItem.meals.length !== 1 ? "s" : ""}
                             </div>
                             <div className="text-lg font-bold text-blue-600">
-                              {dayTotal.toFixed(0)} DKK
+                              {dayTotal.toFixed(0)} Rs
                             </div>
                           </div>
                         </div>
@@ -270,12 +270,12 @@ const CalendarCheckoutPage = () => {
                                   {meal.name}
                                 </h4>
                                 <p className="text-sm text-gray-600">
-                                  Quantity: {meal.quantity} × {meal.price} DKK
+                                  Quantity: {meal.quantity} × {meal.price} Rs
                                 </p>
                               </div>
                               <div className="text-right">
                                 <p className="text-lg font-bold text-gray-900">
-                                  {(meal.price * meal.quantity).toFixed(0)} DKK
+                                  {(meal.price * meal.quantity).toFixed(0)} Rs
                                 </p>
                               </div>
                             </div>
@@ -345,14 +345,14 @@ const CalendarCheckoutPage = () => {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
                   <span className="font-medium">
-                    {(orderData.totalPrice || 0).toFixed(0)} DKK
+                    {(orderData.totalPrice || 0).toFixed(0)} Rs
                   </span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Delivery Fee</span>
                   <span className="font-medium">
-                    {orderData.deliveryFee || 0} DKK
+                    {orderData.deliveryFee || 0} Rs
                   </span>
                 </div>
 
@@ -360,7 +360,7 @@ const CalendarCheckoutPage = () => {
                   <div className="flex justify-between">
                     <span className="text-xl font-bold">Total</span>
                     <span className="text-xl font-bold text-blue-600">
-                      {(orderData.grandTotal || 0).toFixed(0)} DKK
+                      {(orderData.grandTotal || 0).toFixed(0)} Rs
                     </span>
                   </div>
                 </div>

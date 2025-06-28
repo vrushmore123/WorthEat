@@ -729,13 +729,13 @@ const CalendarOrder = ({
               <div className="w-full sm:w-auto">
                 <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-4 text-xs text-gray-600">
                   <span>{totalItems} items</span>
-                  <span>{totalPrice.toFixed(0)} DKK</span>
+                  <span>{totalPrice.toFixed(0)} Rs</span>
                   <span>+{deliveryFee} delivery</span>
                 </div>
                 <div className="text-sm sm:text-base font-bold text-gray-900">
                   Total:{" "}
                   <span className="text-emerald-600">
-                    {grandTotal.toFixed(0)} DKK
+                    {grandTotal.toFixed(0)} Rs
                   </span>
                 </div>
               </div>
