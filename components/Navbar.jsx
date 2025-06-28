@@ -10,6 +10,7 @@ import {
   User,
   ShoppingBag,
   HeartPulse,
+  Calendar,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -73,6 +74,10 @@ const Navbar = ({ mealType, setMealType }) => {
       toast.error("Vendor ID is missing!");
       return;
     }
+    if (route === "planYourOrder") {
+      router.push(`/calender/${vendorId}/${customerId}`); // Exception for "Plan Your Order"
+      return;
+    }
     if (["breakfast", "snacks", "Lunch", "specials"].includes(route)) {
       router.push(`/booking/${customerId}/${vendorId}/${route}`);
       return;
@@ -81,7 +86,7 @@ const Navbar = ({ mealType, setMealType }) => {
       router.push(`/${route}/${customerId}`);
       return;
     }
- 
+
     router.push(`/booking/${customerId}/${vendorId}/${route}`);
   };
 
@@ -101,7 +106,7 @@ const Navbar = ({ mealType, setMealType }) => {
     { name: "Snacks", route: "snacks" },
     { name: "Lunch/Dinner", route: "Lunch/Dinner" },
     { name: "Specials", route: "specials" },
-   
+    { name: "Plan Your Order", route: "planYourOrder" },
     { name: "My Orders", route: "myOrders", icon: <ShoppingBag size={20} /> },
   ];
 
